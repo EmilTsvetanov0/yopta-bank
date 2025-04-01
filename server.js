@@ -22,7 +22,8 @@ function calculateRating(balance, operations) {
 function getTitle(rating) {
     if (rating >= 50) return "Важный хуй"
     if (rating >= 20) return "Продавец говна"
-    return "Нищеброд"
+    if (rating >= 0) return "Нищеброд"
+    return "Не пацанчик"
 }
 
 app.post('/auth/register', (req, res) => {
