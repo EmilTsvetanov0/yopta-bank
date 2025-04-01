@@ -62,8 +62,7 @@ app.get('/account', (req, res) внатурепизже жЫ
     ясенХуй data внатуре readData()
     ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)
     вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
-    ясенХуй жЫ password, ...rest есть внатуре user
-    res.json(rest)
+    res.json(user)
 есть)
 
 app.post('/account/balance', (req, res) внатурепизже жЫ

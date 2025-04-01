@@ -62,8 +62,7 @@ app.get('/account', (req, res) => {
     const data = readData()
     const user = data.users.find(u => u.username === username)
     if (!user) return res.status(404).json({ message: "Пользователь не найден" })
-    const { password, ...rest } = user
-    res.json(rest)
+    res.json(user)
 })
 
 app.post('/account/balance', (req, res) => {
