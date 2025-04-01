@@ -95,7 +95,6 @@ app.post('/transfer', (req, res) => {
     const fromUser = data.users.find(u => u.username === fromUsername)
     const toUser = data.users.find(u => u.username === toUsername)
     if (!fromUser || !toUser) return res.status(404).json({ message: "Отправитель или получатель не найден" })
-    if (fromUser.balance < amount) return res.status(400).json({ message: "Недостаточно средств" })
     fromUserComission = calculateRating(fromUser.balance, fromUser.operations)
     toUserComission = calculateRating(toUser.balance, toUser.operations)
     fromUser.balance -= amount*(1.0+fromUserComission/100)
@@ -107,6 +106,7 @@ app.post('/transfer', (req, res) => {
         fromUserName: fromUser.username,
         toUserName: toUser.username,
         amount,
+        actualAmount: amount*(1.0-toUserComission/100),
         date: new Date().toISOString(),
         status: "Завершен"
     }
@@ -114,6 +114,30 @@ app.post('/transfer', (req, res) => {
     writeData(data)
     res.json({ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%", transaction: newTransaction })
 })
+
+app.post('/cancel', (req, res) => {
+    const { idOp } = req.body
+    const data = readData()
+    const transaction = data.transactions.find(u => u.id === idOp)
+    const fromUsername = transaction.toUserName
+    const toUsername = transaction.fromUserName
+    const amount = transaction.amount
+    if (!fromUsername || !toUsername || amount == null) return res.status(400).json({ message: "Укажите отправителя, получателя и сумму" })
+    const fromUser = data.users.find(u => u.username === fromUsername)
+    const toUser = data.users.find(u => u.username === toUsername)
+    if (!fromUser || !toUser) return res.status(404).json({ message: "Отправитель или получатель не найден" })
+    fromUserComission = calculateRating(fromUser.balance, fromUser.operations)
+    toUserComission = calculateRating(toUser.balance, toUser.operations)
+    fromUser.balance -= transaction.actualAmount
+    toUser.balance += amount*(1.0-toUserComission/100)
+    fromUser.operations--
+    toUser.operations--
+    transaction.status = "Cancelled"
+    writeData(data)
+    res.json({ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%" })
+})
+
+
 
 app.get('/history', (req, res) => {
     const { username } = req.query

@@ -4,7 +4,7 @@
       "id": 1,
       "username": "ivan",
       "password": "pass123",
-      "balance": 2000,
+      "balance": 856.6116625523999,
       "operations": 7,
       "cardNumber": "4111111111111111",
       "cvv": "123"
@@ -13,7 +13,7 @@
       "id": 2,
       "username": "anna",
       "password": "pass456",
-      "balance": 800,
+      "balance": 0,
       "operations": 2,
       "cardNumber": "4222222222222222",
       "cvv": "456"
@@ -48,28 +48,63 @@
   ],
   "transactions": [
     {
-      "id": 1,
+      "id": 4,
       "fromUserName": "ivan",
       "toUserName": "anna",
-      "amount": 200,
-      "date": "2025-04-01T12:00:00.000Z",
-      "status": "Завершен"
+      "amount": 100,
+      "date": "2025-04-01T13:16:48.288Z",
+      "status": "Cancelled"
     },
     {
-      "id": 2,
-      "fromUserName": "dmitry",
-      "toUserName": "sergey",
-      "amount": 150,
-      "date": "2025-04-02T15:30:00.000Z",
-      "status": "Завершен"
+      "id": 5,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "date": "2025-04-01T13:26:16.508Z",
+      "status": "Cancelled"
     },
     {
-      "id": 3,
-      "fromUserName": "anna",
-      "toUserName": "olga",
-      "amount": 300,
-      "date": "2025-04-03T10:45:00.000Z",
-      "status": "Завершен"
+      "id": 6,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "date": "2025-04-01T13:29:58.846Z",
+      "status": "Cancelled"
+    },
+    {
+      "id": 7,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "date": "2025-04-01T13:32:18.213Z",
+      "status": "Cancelled"
+    },
+    {
+      "id": 8,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "actualAmount": 96,
+      "date": "2025-04-01T13:40:24.542Z",
+      "status": "Cancelled"
+    },
+    {
+      "id": 9,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "actualAmount": 96,
+      "date": "2025-04-01T13:40:49.344Z",
+      "status": "Cancelled"
+    },
+    {
+      "id": 10,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 100,
+      "actualAmount": 96,
+      "date": "2025-04-01T13:41:19.286Z",
+      "status": "Cancelled"
     }
   ]
 }

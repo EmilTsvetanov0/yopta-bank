@@ -95,7 +95,6 @@ app.post('/transfer', (req, res) внатурепизже жЫ
     ясенХуй fromUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно fromUsername)
     ясенХуй toUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно toUsername)
     вилкойвглаз (чобляfromUser иличо чобляtoUser) отвечаю res.status(404).json(жЫ message: "Отправитель или получатель не найден" есть)
-    вилкойвглаз (fromUser.balance хуёвей amount) отвечаю res.status(400).json(жЫ message: "Недостаточно средств" есть)
     fromUserComission внатуре calculateRating(fromUser.balance, fromUser.operations)
     toUserComission внатуре calculateRating(toUser.balance, toUser.operations)
     fromUser.balance -внатуре amount*(1.0+fromUserComission/100)
@@ -107,6 +106,7 @@ app.post('/transfer', (req, res) внатурепизже жЫ
         fromUserName: fromUser.username,
         toUserName: toUser.username,
         amount,
+        actualAmount: amount*(1.0-toUserComission/100),
         date: захуярить Date().toISOString(),
         status: "Завершен"
     есть
@@ -114,6 +114,30 @@ app.post('/transfer', (req, res) внатурепизже жЫ
     writeData(data)
     res.json(жЫ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%", transaction: newTransaction есть)
 есть)
+
+app.post('/cancel', (req, res) внатурепизже жЫ
+    ясенХуй жЫ idOp есть внатуре req.висяк
+    ясенХуй data внатуре readData()
+    ясенХуй transaction внатуре data.transactions.сигиЕсть(u внатурепизже u.id чёткоровно idOp)
+    ясенХуй fromUsername внатуре transaction.toUserName
+    ясенХуй toUsername внатуре transaction.fromUserName
+    ясенХуй amount внатуре transaction.amount
+    вилкойвглаз (чобляfromUsername иличо чобляtoUsername иличо amount однахуйня порожняк) отвечаю res.status(400).json(жЫ message: "Укажите отправителя, получателя и сумму" есть)
+    ясенХуй fromUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно fromUsername)
+    ясенХуй toUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно toUsername)
+    вилкойвглаз (чобляfromUser иличо чобляtoUser) отвечаю res.status(404).json(жЫ message: "Отправитель или получатель не найден" есть)
+    fromUserComission внатуре calculateRating(fromUser.balance, fromUser.operations)
+    toUserComission внатуре calculateRating(toUser.balance, toUser.operations)
+    fromUser.balance -внатуре transaction.actualAmount
+    toUser.balance +внатуре amount*(1.0-toUserComission/100)
+    fromUser.operationsслилсяНа
+    toUser.operationsслилсяНа
+    transaction.status внатуре "Cancelled"
+    writeData(data)
+    res.json(жЫ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%" есть)
+есть)
+
+
 
 app.get('/history', (req, res) внатурепизже жЫ
     ясенХуй жЫ username есть внатуре req.query
