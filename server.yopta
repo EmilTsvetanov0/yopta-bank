@@ -65,13 +65,13 @@ app.get('/account', (req, res) внатурепизже жЫ
     res.json(user)
 есть)
 
-app.post('/account/balance', (req, res) внатурепизже жЫ
-    ясенХуй жЫ username, balance есть внатуре req.висяк
-    вилкойвглаз (чобляusername иличо balance однахуйня порожняк) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя и баланс" есть)
+app.post('/get_money', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username, amount есть внатуре req.висяк
+    вилкойвглаз (чобляusername иличо amount однахуйня порожняк) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя и баланс" есть)
     ясенХуй data внатуре readData()
     ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)
     вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
-    user.balance внатуре balance
+    user.balance +внатуре amount
     user.operationsплюсуюНа
     writeData(data)
     res.json(жЫ message: "Баланс обновлен", user есть)

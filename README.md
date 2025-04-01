@@ -1,2 +1,4 @@
-Для работы приложения нужно написать:  
-```npm install express && npm install fs && npm install -g run-yopta && run-yopta server.yopta```
+Прототип интернет-банка написанный полностью на YoptaScript
+
+Для запуска:
+```docker compose up --build -d```
