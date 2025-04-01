@@ -26,20 +26,16 @@ function getTitle(rating) {
 }
 
 app.post('/auth/register', (req, res) => {
-    const { username, password, cvv, cardNumber } = req.body
-    if (!username || !password || !cvv || !cardNumber) return res.status(400).json({ message: "Укажите имя пользователя и пароль и cvv и номер карты" })
+    const { username, password } = req.body
+    if (!username || !password) return res.status(400).json({ message: "Укажите имя пользователя и пароль" })
     const data = readData()
     if (data.users.find(u => u.username === username)) return res.status(400).json({ message: "Пользователь уже существует" })
-    userWithTheSamePassword = data.users.find(u => u.password === password)
-    if (userWithTheSamePassword) return res.status(400).json({ message: "Пользователь " + userWithTheSamePassword.username + " с таким паролем уже существует" })
     const newUser = {
         id: data.users.length ? data.users[data.users.length - 1].id + 1 : 1,
         username,
         password,
         balance: 0,
-        operations: 0,
-        cvv,
-        cardNumber,
+        operations: 0
     }
     data.users.push(newUser)
     writeData(data)
@@ -96,10 +92,8 @@ app.post('/transfer', (req, res) => {
     const toUser = data.users.find(u => u.username === toUsername)
     if (!fromUser || !toUser) return res.status(404).json({ message: "Отправитель или получатель не найден" })
     if (fromUser.balance < amount) return res.status(400).json({ message: "Недостаточно средств" })
-    fromUserComission = calculateRating(fromUser.balance, fromUser.operations)
-    toUserComission = calculateRating(toUser.balance, toUser.operations)
-    fromUser.balance -= amount*(1.0+fromUserComission/100)
-    toUser.balance += amount*(1.0-toUserComission/100)
+    fromUser.balance -= amount
+    toUser.balance += amount
     fromUser.operations++
     toUser.operations++
     const newTransaction = {
@@ -112,7 +106,7 @@ app.post('/transfer', (req, res) => {
     }
     data.transactions.push(newTransaction)
     writeData(data)
-    res.json({ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%", transaction: newTransaction })
+    res.json({ message: "Перевод выполнен", transaction: newTransaction })
 })
 
 app.get('/history', (req, res) => {

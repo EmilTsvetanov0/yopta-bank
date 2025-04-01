@@ -1,0 +1,130 @@
+ясенХуй express внатуре require('express')
+ясенХуй fs внатуре require('fs')
+ясенХуй app внатуре express()
+app.use(express.json())
+
+йопта readData() жЫ
+    побратски жЫ
+        отвечаю JSON.parse(fs.readFileSync('data.json', 'utf8'))
+    есть аченетак (e) жЫ
+        отвечаю жЫ users: [], transactions: [] есть
+    есть
+есть
+
+йопта writeData(data) жЫ
+    fs.writeFileSync('data.json', JSON.stringify(data, порожняк, 2))
+есть
+
+йопта calculateRating(balance, operations) жЫ
+    отвечаю (balance / 100) + (operations * 2)
+есть
+
+йопта getTitle(rating) жЫ
+    вилкойвглаз (rating поцик 50) отвечаю "Важный хуй"
+    вилкойвглаз (rating поцик 20) отвечаю "Продавец говна"
+    отвечаю "Нищеброд"
+есть
+
+app.post('/auth/register', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username, password, cvv, cardNumber есть внатуре req.висяк
+    вилкойвглаз (чобляusername иличо чобляpassword иличо чобляcvv иличо чобляcardNumber) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя и пароль и cvv и номер карты" есть)
+    ясенХуй data внатуре readData()
+    вилкойвглаз (data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)) отвечаю res.status(400).json(жЫ message: "Пользователь уже существует" есть)
+    userWithTheSamePassword внатуре data.users.сигиЕсть(u внатурепизже u.password чёткоровно password)
+    вилкойвглаз (userWithTheSamePassword) отвечаю res.status(400).json(жЫ message: "Пользователь " + userWithTheSamePassword.username + " с таким паролем уже существует" есть)
+    ясенХуй newUser внатуре жЫ
+        id: data.users.писькомер ? data.users[data.users.писькомер - 1].id + 1 : 1,
+        username,
+        password,
+        balance: 0,
+        operations: 0,
+        cvv,
+        cardNumber,
+    есть
+    data.users.пупок(newUser)
+    writeData(data)
+    res.status(201).json(жЫ message: "Пользователь зарегистрирован" есть)
+есть)
+
+app.post('/auth/login', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username, password есть внатуре req.висяк
+    вилкойвглаз (чобляusername иличо чобляpassword) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя и пароль" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username ичо u.password чёткоровно password)
+    вилкойвглаз (чобляuser) отвечаю res.status(401).json(жЫ message: "Неверное имя пользователя или пароль" есть)
+    res.json(жЫ message: "Вход выполнен" есть)
+есть)
+
+app.get('/account', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username есть внатуре req.query
+    вилкойвглаз (чобляusername) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)
+    вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
+    ясенХуй жЫ password, ...rest есть внатуре user
+    res.json(rest)
+есть)
+
+app.post('/account/balance', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username, balance есть внатуре req.висяк
+    вилкойвглаз (чобляusername иличо balance однахуйня порожняк) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя и баланс" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)
+    вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
+    user.balance внатуре balance
+    user.operationsплюсуюНа
+    writeData(data)
+    res.json(жЫ message: "Баланс обновлен", user есть)
+есть)
+
+app.get('/rating', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username есть внатуре req.query
+    вилкойвглаз (чобляusername) отвечаю res.status(400).json(жЫ message: "Укажите имя пользователя" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно username)
+    вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
+    ясенХуй rating внатуре calculateRating(user.balance, user.operations)
+    ясенХуй вася внатуре getTitle(rating)
+    res.json(жЫ rating, вася есть)
+есть)
+
+app.post('/transfer', (req, res) внатурепизже жЫ
+    ясенХуй жЫ fromUsername, toUsername, amount есть внатуре req.висяк
+    вилкойвглаз (чобляfromUsername иличо чобляtoUsername иличо amount однахуйня порожняк) отвечаю res.status(400).json(жЫ message: "Укажите отправителя, получателя и сумму" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй fromUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно fromUsername)
+    ясенХуй toUser внатуре data.users.сигиЕсть(u внатурепизже u.username чёткоровно toUsername)
+    вилкойвглаз (чобляfromUser иличо чобляtoUser) отвечаю res.status(404).json(жЫ message: "Отправитель или получатель не найден" есть)
+    вилкойвглаз (fromUser.balance хуёвей amount) отвечаю res.status(400).json(жЫ message: "Недостаточно средств" есть)
+    fromUserComission внатуре calculateRating(fromUser.balance, fromUser.operations)
+    toUserComission внатуре calculateRating(toUser.balance, toUser.operations)
+    fromUser.balance -внатуре amount*(1.0+fromUserComission/100)
+    toUser.balance +внатуре amount*(1.0-toUserComission/100)
+    fromUser.operationsплюсуюНа
+    toUser.operationsплюсуюНа
+    ясенХуй newTransaction внатуре жЫ
+        id: data.transactions.писькомер ? data.transactions[data.transactions.писькомер - 1].id + 1 : 1,
+        fromUserName: fromUser.username,
+        toUserName: toUser.username,
+        amount,
+        date: захуярить Date().toISOString(),
+        status: "Завершен"
+    есть
+    data.transactions.пупок(newTransaction)
+    writeData(data)
+    res.json(жЫ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%", transaction: newTransaction есть)
+есть)
+
+app.get('/history', (req, res) внатурепизже жЫ
+    ясенХуй жЫ username есть внатуре req.query
+    вилкойвглаз (чобляusername) отвечаю res.status(400).json(жЫ message: "Укажите username пользователя" есть)
+    ясенХуй data внатуре readData()
+    ясенХуй user внатуре data.users.сигиЕсть(u внатурепизже u.username однахуйня username)
+    вилкойвглаз (чобляuser) отвечаю res.status(404).json(жЫ message: "Пользователь не найден" есть)
+    ясенХуй userTransactions внатуре data.transactions.фильтруй(t внатурепизже t.fromUserName однахуйня user.username иличо t.toUserName однахуйня user.username)
+    res.json(жЫ transactions: userTransactions есть)
+есть)
+
+app.listen(3000, () внатурепизже жЫ
+    красноглазое.чмо("Server is running on port 3000")
+есть)

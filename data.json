@@ -1,0 +1,75 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "ivan",
+      "password": "pass123",
+      "balance": 2000,
+      "operations": 7,
+      "cardNumber": "4111111111111111",
+      "cvv": "123"
+    },
+    {
+      "id": 2,
+      "username": "anna",
+      "password": "pass456",
+      "balance": 800,
+      "operations": 2,
+      "cardNumber": "4222222222222222",
+      "cvv": "456"
+    },
+    {
+      "id": 3,
+      "username": "sergey",
+      "password": "pass789",
+      "balance": 300,
+      "operations": 1,
+      "cardNumber": "4333333333333333",
+      "cvv": "789"
+    },
+    {
+      "id": 4,
+      "username": "olga",
+      "password": "pass321",
+      "balance": 1200,
+      "operations": 4,
+      "cardNumber": "4444444444444444",
+      "cvv": "321"
+    },
+    {
+      "id": 5,
+      "username": "dmitry",
+      "password": "pass654",
+      "balance": 2500,
+      "operations": 7,
+      "cardNumber": "4555555555555555",
+      "cvv": "654"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "fromUserName": "ivan",
+      "toUserName": "anna",
+      "amount": 200,
+      "date": "2025-04-01T12:00:00.000Z",
+      "status": "Завершен"
+    },
+    {
+      "id": 2,
+      "fromUserName": "dmitry",
+      "toUserName": "sergey",
+      "amount": 150,
+      "date": "2025-04-02T15:30:00.000Z",
+      "status": "Завершен"
+    },
+    {
+      "id": 3,
+      "fromUserName": "anna",
+      "toUserName": "olga",
+      "amount": 300,
+      "date": "2025-04-03T10:45:00.000Z",
+      "status": "Завершен"
+    }
+  ]
+}
