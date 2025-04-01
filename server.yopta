@@ -137,7 +137,64 @@ app.post('/cancel', (req, res) внатурепизже жЫ
     res.json(жЫ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%" есть)
 есть)
 
+app.get('/top', (req, res) внатурепизже жЫ
+    ясенХуй data внатуре readData()
+    вилкойвглаз(data.users.писькомер чёткоровно 0) отвечаю res.json(жЫ rich: [], poor: []есть)
+    вилкойвглаз(data.users.писькомер чёткоровно 1) отвечаю res.json(жЫrich: [data.users[0]], poor: [data.users[0]]есть)
+    вилкойвглаз(data.users.писькомер чёткоровно 2) отвечаю res.json(жЫrich: [data.users[0], data.users[1]], poor: [data.users[0], data.users[1]]есть)
+    вилкойвглаз(data.users.писькомер чёткоровно 3) отвечаю res.json(жЫrich: [data.users[0], data.users[1], data.users[2]], poor: [data.users[0], data.users[1], data.users[2]]есть)
 
+    участковый poorest1 внатуре data.users[0] нахуй
+    го (участковый i внатуре 1 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].balance хуёвей poorest1.balance) жЫ
+            poorest1 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    участковый poorest2 внатуре порожняк нахуй
+    го (участковый i внатуре 0 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].id чёткоровно poorest1.id) двигай нахуй
+        вилкойвглаз (poorest2 чёткоровно порожняк иличо data.users[i].balance хуёвей poorest2.balance) жЫ
+            poorest2 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    участковый poorest3 внатуре порожняк нахуй
+    го (участковый i внатуре 0 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].id чёткоровно poorest1.id иличо data.users[i].id чёткоровно poorest2.id) двигай нахуй
+        вилкойвглаз (poorest3 чёткоровно порожняк иличо data.users[i].balance хуёвей poorest3.balance) жЫ
+            poorest3 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    участковый richest1 внатуре data.users[0] нахуй
+    го (участковый i внатуре 1 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].balance пизже richest1.balance) жЫ
+            richest1 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    участковый richest2 внатуре порожняк нахуй
+    го (участковый i внатуре 0 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].id чёткоровно richest1.id) двигай нахуй
+        вилкойвглаз (richest2 чёткоровно порожняк иличо data.users[i].balance пизже richest2.balance) жЫ
+            richest2 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    участковый richest3 внатуре порожняк нахуй
+    го (участковый i внатуре 0 нахуй i хуёвей data.users.писькомер нахуй iплюсуюНа) жЫ
+        вилкойвглаз (data.users[i].id чёткоровно richest1.id иличо data.users[i].id чёткоровно richest2.id) двигай нахуй
+        вилкойвглаз (richest3 чёткоровно порожняк иличо data.users[i].balance пизже richest3.balance) жЫ
+            richest3 внатуре data.users[i] нахуй
+        есть
+    есть
+
+    res.json(жЫ
+        poorest: [poorest1, poorest2, poorest3],
+        richest: [richest1, richest2, richest3]
+    есть) нахуй
+есть)
 
 app.get('/history', (req, res) внатурепизже жЫ
     ясенХуй жЫ username есть внатуре req.query

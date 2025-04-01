@@ -137,7 +137,64 @@ app.post('/cancel', (req, res) => {
     res.json({ message: "Перевод выполнен с коммисией " + fromUserComission + "% и " + toUserComission + "%" })
 })
 
+app.get('/top', (req, res) => {
+    const data = readData()
+    if(data.users.length === 0) return res.json({ rich: [], poor: []})
+    if(data.users.length === 1) return res.json({rich: [data.users[0]], poor: [data.users[0]]})
+    if(data.users.length === 2) return res.json({rich: [data.users[0], data.users[1]], poor: [data.users[0], data.users[1]]})
+    if(data.users.length === 3) return res.json({rich: [data.users[0], data.users[1], data.users[2]], poor: [data.users[0], data.users[1], data.users[2]]})
 
+    let poorest1 = data.users[0];
+    for (let i = 1; i < data.users.length; i++) {
+        if (data.users[i].balance < poorest1.balance) {
+            poorest1 = data.users[i];
+        }
+    }
+
+    let poorest2 = null;
+    for (let i = 0; i < data.users.length; i++) {
+        if (data.users[i].id === poorest1.id) continue;
+        if (poorest2 === null || data.users[i].balance < poorest2.balance) {
+            poorest2 = data.users[i];
+        }
+    }
+
+    let poorest3 = null;
+    for (let i = 0; i < data.users.length; i++) {
+        if (data.users[i].id === poorest1.id || data.users[i].id === poorest2.id) continue;
+        if (poorest3 === null || data.users[i].balance < poorest3.balance) {
+            poorest3 = data.users[i];
+        }
+    }
+
+    let richest1 = data.users[0];
+    for (let i = 1; i < data.users.length; i++) {
+        if (data.users[i].balance > richest1.balance) {
+            richest1 = data.users[i];
+        }
+    }
+
+    let richest2 = null;
+    for (let i = 0; i < data.users.length; i++) {
+        if (data.users[i].id === richest1.id) continue;
+        if (richest2 === null || data.users[i].balance > richest2.balance) {
+            richest2 = data.users[i];
+        }
+    }
+
+    let richest3 = null;
+    for (let i = 0; i < data.users.length; i++) {
+        if (data.users[i].id === richest1.id || data.users[i].id === richest2.id) continue;
+        if (richest3 === null || data.users[i].balance > richest3.balance) {
+            richest3 = data.users[i];
+        }
+    }
+
+    res.json({
+        poorest: [poorest1, poorest2, poorest3],
+        richest: [richest1, richest2, richest3]
+    });
+})
 
 app.get('/history', (req, res) => {
     const { username } = req.query
